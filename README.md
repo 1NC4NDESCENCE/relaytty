@@ -8,6 +8,33 @@ It defines a **relay terminal**: a persistent terminal session with explicit ide
 
 The project is at the **prototype stage**. The initial target is Linux with Zellij 0.44 or newer. Support for tmux, macOS, native Windows, and polished installation comes after the behavioral contract is proven.
 
+## Quick start
+
+RelayTTY currently requires Linux and Zellij 0.44 or newer. Install the development version directly from GitHub:
+
+```sh
+npx skills add 1NC4NDESCENCE/relaytty --skill relaytty
+```
+
+Then ask the agent for work whose terminal state should continue, for example:
+
+> Start an ADB shell in a relay terminal, change to `/data/local/tmp`, and keep it open for later commands.
+
+RelayTTY should decline ordinary one-shot commands. The project is public for experimentation, but its installation and update path has not yet passed the release gate.
+
+## Contents
+
+- [Quick start](#quick-start)
+- [The problem](#the-problem)
+- [The experience](#the-experience)
+- [Prototype slice](#prototype-slice)
+- [Support policy](#support-policy)
+- [Safety rules](#safety-rules)
+- [What persists](#what-persists)
+- [Contributing](#contributing)
+- [License](#license)
+- [Roadmap](#roadmap)
+
 ## The problem
 
 Ordinary command tools are excellent when a command starts, returns output, and exits. They become awkward when the real object of work is a continuing terminal state:
@@ -92,18 +119,6 @@ RelayTTY distinguishes several different kinds of persistence:
 
 Claiming merely that “the session persists” hides the failures that matter.
 
-## Installation
-
-RelayTTY is not published yet. During development, use the skill at [`skill/relaytty`](skill/relaytty).
-
-Install the development version directly from GitHub:
-
-```sh
-npx skills add 1NC4NDESCENCE/relaytty --skill relaytty
-```
-
-Updates should remain ordinary repository updates followed by the installer’s update path. User-facing behavior changes will be documented at the repository root; the installable skill will stay small and self-contained.
-
 ## Contributing
 
 Real inconveniences are design input. If RelayTTY chooses the wrong mode, targets the wrong pane, loses state, interferes with human control, captures something sensitive, or recovers badly, please open a focused report using the guidance in [`CONTRIBUTING.md`](CONTRIBUTING.md).
@@ -118,10 +133,9 @@ RelayTTY is available under the [MIT License](LICENSE).
 
 ## Roadmap
 
-1. Prove the Zellij/Linux prototype and its failure behavior.
-2. Build repeatable scenario evaluations and fault-injection tests.
-3. Validate macOS separately and decide whether Zellij is sufficient there.
-4. Add a tmux adapter only if it can preserve the same contract.
-5. Publish the skill, a short demonstration, and a technical essay at [1ncandescence.me](https://1ncandescence.me/) explaining the broader terminal-state problem and the testing philosophy.
+Major work is tracked in two GitHub milestones:
 
-The README should eventually include a short, captioned terminal recording. It should demonstrate one idea—agent work, human takeover, agent resumption—in under a minute. The written contract remains canonical because recordings age quickly and are not searchable or accessible to everyone.
+- [`v0.1 — Trustworthy prototype`](https://github.com/1NC4NDESCENCE/relaytty/milestone/1) proves the Zellij/Linux contract, failure behavior, installation path, demonstration, and technical essay.
+- [`v0.2 — Broader compatibility`](https://github.com/1NC4NDESCENCE/relaytty/milestone/2) evaluates macOS, tmux, and the native Windows versus WSL boundary only after the core contract is trustworthy.
+
+The planned [asciinema demonstration](https://github.com/1NC4NDESCENCE/relaytty/issues/5) will show one idea—agent work, human takeover, agent resumption—in under a minute. The written contract remains canonical because recordings age quickly and are not searchable or accessible to everyone.

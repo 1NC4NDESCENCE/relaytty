@@ -94,5 +94,6 @@ Before the first public release:
 7. A new user completes installation and the demonstration from the README without private coaching.
 8. Diagnostics are reviewed using canary secrets that must never appear in retained artifacts.
 9. Support claims name exact tested versions and separate automated from manual evidence.
+10. The README demonstration is reproducible, reviewed for secrets, and accompanied by a transcript or captions.
 
 Release confidence comes from different kinds of evidence agreeing, not from a large test count. When a production bug appears, first ask which state transition or oracle the suite failed to represent; then add that missing idea as a regression test.
