@@ -1,0 +1,4 @@
+interface:
+  display_name: "RelayTTY"
+  short_description: "Persistent terminals for humans and agents"
+  default_prompt: "Use $relaytty to run this interactive or long-lived command in a persistent terminal I can observe and take over."

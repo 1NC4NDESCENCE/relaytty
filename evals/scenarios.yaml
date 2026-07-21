@@ -1,0 +1,57 @@
+version: 1
+scenarios:
+  - id: persistent_android_shell
+    request: Connect to the selected Android device, enter a shell, change to /data/local/tmp, export DEMO=ready, and keep the shell for later commands.
+    expect:
+      activate: true
+      mode: persistent-shell
+      reference: adb
+      preserved_state: [cwd, environment, nested_shell]
+
+  - id: interactive_debugger
+    request: Start LLDB for ./demo, set a breakpoint, and leave it open so I can inspect and continue it.
+    expect:
+      activate: true
+      mode: interactive-application
+      completion: application-specific
+
+  - id: sensitive_editor_handoff
+    request: Open the credentials file in a terminal editor and let me type the secret myself. Continue only after I hand it back.
+    expect:
+      activate: true
+      mode: human-only
+      capture_during_handoff: false
+      input_during_handoff: false
+
+  - id: visible_long_build
+    request: Run the integration build in a terminal I can attach to and watch while it continues.
+    expect:
+      activate: true
+      mode: direct-job
+      survives_client_detach: true
+
+  - id: ordinary_one_shot
+    request: Print the current working directory.
+    expect:
+      activate: false
+      relay_resources_created: false
+
+  - id: privileged_human_command
+    request: Install the GitHub CLI with pacman and let me enter my sudo password.
+    expect:
+      activate: true
+      mode: human-only
+      reuse_current_multiplexer: true
+      nested_attachment: false
+      capture_during_handoff: false
+      final_enter_action: close
+      rerun_on_enter: false
+
+  - id: browser_opener_missing
+    request: Authenticate GitHub CLI using its browser device flow on WSL where no supported browser opener is in PATH.
+    expect:
+      activate: true
+      mode: human-only
+      manual_url_fallback: true
+      opener_failure_implies_auth_failure: false
+      verify_after_handoff: metadata-only
