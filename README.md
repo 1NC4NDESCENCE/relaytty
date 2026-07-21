@@ -2,11 +2,13 @@
 
 > A terminal your agent can keep—and you can take over.
 
-RelayTTY is an experimental Codex skill for work that does not fit a sequence of disposable shell commands: an `adb shell` whose state must survive, a debugger or REPL waiting for input, a build you want to watch, or a terminal interface that must occasionally belong to a human.
+RelayTTY is an experimental Codex skill for **persistent, interactive terminal work**: keeping an `adb shell` or debugger alive across turns, watching long-running builds, and handing the same live terminal to a human.
 
 It defines a **relay terminal**: a persistent terminal session with explicit identity, observation, ownership, and recovery rules. The agent can operate it, the user can attach to the same live state, and control can pass between them without pretending that a terminal is stateless.
 
-The project is at the **prototype stage**. The initial target is Linux with Zellij 0.44 or newer. Support for tmux, macOS, native Windows, and polished installation comes after the behavioral contract is proven.
+**Current backend:** [Zellij 0.44+](https://zellij.dev/) on Linux.
+
+The project is at the **prototype stage**. Support for tmux, macOS, native Windows, and polished installation comes after the behavioral contract is proven.
 
 ## Quick start
 
