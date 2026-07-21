@@ -55,3 +55,26 @@ scenarios:
       manual_url_fallback: true
       opener_failure_implies_auth_failure: false
       verify_after_handoff: metadata-only
+
+  - id: unsupported_fish_persistent_shell
+    request: Keep my existing Fish shell open, change its directory, define exported state, and run more commands later.
+    context:
+      active_shell: fish
+      tested_adapter_available: false
+    expect:
+      activate: true
+      mode: persistent-shell
+      send_input: false
+      outcome: unsupported-shell-adapter
+
+  - id: nested_shell_identity_unknown
+    request: Continue configuring the remote shell that is currently in this pane.
+    context:
+      login_shell: bash
+      foreground_language: unknown
+    expect:
+      activate: true
+      mode: interactive-application
+      infer_from_login_shell: false
+      send_shell_marker: false
+      outcome: requires-foreground-identification

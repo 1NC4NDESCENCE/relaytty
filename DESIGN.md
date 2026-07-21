@@ -44,6 +44,7 @@ These dimensions are independent and must be tested independently:
 - session discoverable;
 - pane identity stable;
 - shell state preserved;
+- active shell dialect and adapter known;
 - foreground application known;
 - current owner known;
 - observation freshness known;
@@ -92,6 +93,7 @@ The first prototype must demonstrate:
 - human handoff with no automated capture or input during ownership;
 - re-discovery and safe continuation after hand-back;
 - timeout and ambiguous-action behavior that does not blindly replay or destroy state.
+- refusal to inject a shell acknowledgement when the active dialect is unknown.
 
 ## Success criteria
 

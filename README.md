@@ -12,7 +12,7 @@ The project is at the **prototype stage**. Support for tmux, macOS, native Windo
 
 ## Quick start
 
-RelayTTY currently requires Linux and Zellij 0.44 or newer. Install the development version directly from GitHub:
+RelayTTY currently requires Linux and Zellij 0.44 or newer. Persistent-shell mode is validated only with Bash. Install the development version directly from GitHub:
 
 ```sh
 npx skills add 1NC4NDESCENCE/relaytty --skill relaytty
@@ -97,6 +97,22 @@ This slice tests the hard semantics before adding platforms and backends. WSL ma
 
 Support is an evidence claim, not a syntax claim. A backend is supported only when installation, lifecycle, identity, input, observation, handoff, recovery, and cleanup are exercised repeatably.
 
+### Shell compatibility
+
+Most RelayTTY modes are largely independent of the user's default shell. Persistent-shell mode is different because completion acknowledgements and state-changing commands must use the active shell's language.
+
+| Shell | Current evidence | Persistent-shell status |
+|---|---|---|
+| Bash | Live Zellij state-preservation smoke test | Prototype target |
+| Dash | Local grammar and state probe | Not yet supported |
+| Zsh | Local grammar and state probe | Not yet supported |
+| mksh | No local evidence | Planned evaluation |
+| Fish | Requires a different adapter | Not yet supported |
+
+`$SHELL` is not sufficient detection: it may describe the login shell while SSH, `adb shell`, a debugger, or another nested shell owns the foreground. RelayTTY must identify each active command language before injecting input.
+
+Broader support is tracked in [the shell-compatibility milestone issue](https://github.com/1NC4NDESCENCE/relaytty/issues/11); passing a syntax probe alone will not promote a shell to supported status.
+
 ## Safety rules
 
 - Every mutation targets a discovered session and pane ID; focus is never an address.
@@ -116,6 +132,7 @@ RelayTTY distinguishes several different kinds of persistence:
 - **process persistence**: the process survives an agent turn or client disconnect;
 - **terminal persistence**: the PTY and foreground application remain alive;
 - **shell persistence**: `cwd`, exported variables, functions, and nested shells remain;
+- **shell identity**: the active command language and tested adapter are known;
 - **identity persistence**: the next actor can find the same session and pane;
 - **ownership persistence**: everyone knows whether the human or agent may act.
 

@@ -3,6 +3,17 @@ set -euo pipefail
 
 helper="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/skill/relaytty/scripts/human-command.sh"
 
+for shell_name in sh dash bash zsh; do
+  if ! command -v "$shell_name" >/dev/null 2>&1; then
+    continue
+  fi
+  portable_output="$(printf '\n' | "$shell_name" "$helper" true)"
+  if [[ "$portable_output" != *'RelayTTY: SUCCESS (exit 0)'* ]]; then
+    printf 'helper failed under %s\n' "$shell_name" >&2
+    exit 1
+  fi
+done
+
 success_output="$(printf '\n' | "$helper" true)"
 if [[ "$success_output" != *'RelayTTY: SUCCESS (exit 0)'* ]]; then
   printf 'missing success result\n' >&2
@@ -26,4 +37,4 @@ if [[ "$failure_output" != *'RelayTTY: FAILED (exit 7)'* ]]; then
   exit 1
 fi
 
-printf 'RelayTTY human-command tests passed.\n'
+printf 'RelayTTY portable human-command tests passed.\n'

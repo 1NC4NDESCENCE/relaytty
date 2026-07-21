@@ -1,6 +1,6 @@
 ---
 name: relaytty
-description: Create and manage persistent, human-observable terminal sessions for interactive programs, stateful shells, long-running builds, debuggers, REPLs, adb shell, SSH, terminal UIs, and human takeover. Use when work needs continued stdin, preserved cwd/environment/application state across turns, a controlling terminal, detach/reattach, live terminal output, or a pane the user can observe or control. Do not use for ordinary one-shot commands or merely to hide work in the background. The current prototype supports Zellij 0.44 or newer on Linux.
+description: Create and manage persistent, human-observable terminal sessions for interactive programs, stateful shells, long-running builds, debuggers, REPLs, adb shell, SSH, terminal UIs, and human takeover. Use when work needs continued stdin, preserved cwd/environment/application state across turns, a controlling terminal, detach/reattach, live terminal output, or a pane the user can observe or control. Do not use for ordinary one-shot commands or merely to hide work in the background. The current prototype supports Zellij 0.44 or newer on Linux; persistent-shell mode is validated only with Bash.
 ---
 
 # RelayTTY
@@ -30,7 +30,7 @@ Do not use it for a normal command that can run to completion through the ordina
 ## Choose one mode
 
 1. **Direct job** — create a pane that runs one long-lived command. Observe process and pane lifecycle.
-2. **Persistent shell** — keep a shell and send commands to it. Use unique acknowledgements to determine completion while preserving `cd` and `export`.
+2. **Persistent shell** — identify the active shell dialect, then use a tested adapter and unique acknowledgements while preserving shell state. Never inject Bash syntax into an unknown shell.
 3. **Interactive application** — start a debugger, REPL, SSH client, nested shell, or TUI. Use application-specific state; do not inject shell markers into its input.
 4. **Human-only** — hand a dedicated pane to the user. Suspend all automated input and content capture until explicit hand-back.
 
@@ -50,9 +50,10 @@ If the mode is unclear, inspect the foreground program and ask before sending in
 ## Read the relevant procedure
 
 - For Zellij commands, explicit addressing, acknowledgements, observation, and cleanup, read [references/zellij.md](references/zellij.md).
+- Before operating a persistent or nested shell, read [references/shells.md](references/shells.md).
 - For Android devices and nested `adb shell` state, also read [references/adb.md](references/adb.md).
 - Before any user takeover, sensitive input, or terminal editor, read [references/human-handoff.md](references/human-handoff.md).
 
-For a one-shot command that needs human interaction, run it through `scripts/human-command.sh` in a pane or tab created with `--close-on-exit`. The helper preserves the command's exit status, shows an explicit colored result, and waits for Enter before Zellij closes it.
+For a one-shot command that needs human interaction, run it through `scripts/human-command.sh` in a pane or tab created with `--close-on-exit`. The portable `/bin/sh` helper preserves the command's exit status, shows an explicit colored result, and waits for Enter before Zellij closes it; it does not depend on the user's default shell.
 
 Installed command help is authoritative for the local version. If a required operation is unavailable, stop before mutation, preserve existing state, and report the exact unsupported step.

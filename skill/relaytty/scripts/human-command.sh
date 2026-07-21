@@ -1,15 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/sh
 set -u
 
-if (( $# == 0 )); then
+if [ "$#" -eq 0 ]; then
   printf 'RelayTTY: no command was provided.\n' >&2
   exit 64
 fi
 
-if [[ -t 1 ]]; then
-  success_color=$'\033[1;32m'
-  failure_color=$'\033[1;31m'
-  reset_color=$'\033[0m'
+if [ -t 1 ]; then
+  escape_character=$(printf '\033')
+  success_color="${escape_character}[1;32m"
+  failure_color="${escape_character}[1;31m"
+  reset_color="${escape_character}[0m"
 else
   success_color=
   failure_color=
@@ -19,7 +20,7 @@ fi
 "$@"
 command_status=$?
 
-if (( command_status == 0 )); then
+if [ "$command_status" -eq 0 ]; then
   printf '\n%sRelayTTY: SUCCESS%s (exit 0)\n' "$success_color" "$reset_color"
 else
   printf '\n%sRelayTTY: FAILED%s (exit %d)\n' \

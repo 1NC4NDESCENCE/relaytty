@@ -26,7 +26,7 @@ The stable promise is “route input to the recorded terminal pane,” not “th
 
 ### Test dimensions independently
 
-Process lifetime, PTY lifetime, discovery, shell state, foreground application, ownership, observation freshness, and action certainty are related but distinct. A useful test deliberately breaks one while keeping the others—for example, keep the Zellij session alive while the device disconnects, or keep the process alive while the client detaches.
+Process lifetime, PTY lifetime, discovery, shell identity, shell state, foreground application, ownership, observation freshness, and action certainty are related but distinct. A useful test deliberately breaks one while keeping the others—for example, keep the Zellij session alive while the device disconnects, or keep the process alive while the client detaches.
 
 ### Prefer stronger oracles
 
@@ -81,6 +81,8 @@ For every positive scenario, look for a meaningful neighbor that should behave d
 
 [`tests/test_human_command.sh`](tests/test_human_command.sh) verifies the one-shot human-command wrapper's success and failure messages, preserved exit status, and explicit close instruction. The regression exists because a raw Zellij command pane can remain held after exit and make Enter rerun a privileged command.
 
+[`tests/test_shell_envelopes.sh`](tests/test_shell_envelopes.sh) runs grammar and state probes against installed Bourne-style shells. Passing means only that the prototype acknowledgement syntax works for those fixtures; it is deliberately weaker than a support claim.
+
 ## Publication gates
 
 Before the first public release:
@@ -95,5 +97,6 @@ Before the first public release:
 8. Diagnostics are reviewed using canary secrets that must never appear in retained artifacts.
 9. Support claims name exact tested versions and separate automated from manual evidence.
 10. The README demonstration is reproducible, reviewed for secrets, and accompanied by a transcript or captions.
+11. Persistent-shell support names exact shell families and versions; unknown and nested command languages are rejected without input.
 
 Release confidence comes from different kinds of evidence agreeing, not from a large test count. When a production bug appears, first ask which state transition or oracle the suite failed to represent; then add that missing idea as a regression test.

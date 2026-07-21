@@ -10,3 +10,4 @@
 - Documented manual browser fallback after WSL dogfooding showed that URL-launch failure does not imply device-flow failure.
 - Moved Quick Start to the top of the README, added a visible contents list, and linked the public milestone roadmap.
 - Sharpened the README opening around persistent interactive work and made the current Zellij backend immediately discoverable.
+- Made the human-command helper portable to `/bin/sh` and established shell identity and adapter selection as an explicit compatibility boundary.
